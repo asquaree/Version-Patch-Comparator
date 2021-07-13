@@ -15,6 +15,11 @@ In this project,we have compared the patch files of consecutive fedora versions 
   5.git diff branchB...branchA - show the diff of what is in branchA that is not in branchB
   ```
   
+## Links
+1. https://src.fedoraproject.org/rpms/grub2/branches?branchname=rawhide - Fedora versions
+2. https://docs.google.com/spreadsheets/d/1EoCEtaAkk-i3tL4SlU3bqkFPzuDPgscUYrIlF1VvZsg/edit#gid=0 - Fedora version comparison
+3. https://docs.google.com/spreadsheets/d/1feBLTM7C_Xf1snN09An0-RWGz49vvFB_Q0Vj5w0yV8Y/edit?ouid=114561297517079528249&usp=sheets_home&ths=true - Fedora version comparison patch wise
+  
  
 
 
