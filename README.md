@@ -9,7 +9,10 @@ In this project,we have compared the patch files of consecutive fedora versions 
   
   ```shell
   1.git clone [url]-retrieve an entire repository from a hosted location via URL
-  2.git init - 
+  2.git init - initialize an existing directory as a Git repository
+  3.git branch - list your branches. a * will appear next to the currently active branch
+  4.git checkout -  switch to another branch and check it out into your working directory
+  5.git diff branchB...branchA - show the diff of what is in branchA that is not in branchB
   ```
   
  
