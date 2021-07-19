@@ -1,25 +1,21 @@
-# compatibility-project(Fedora version comparison using git or python)
->Comparing patch files of consecutive versions of fedrora for eg. f13 and f14
+# compatibility-project
 
-In this project,we have compared the patch files of consecutive fedora versions from f10 to f34
+## Project 1 
+>In this project,we have developed version comparator to compare different versions of Fedora
 
-## Getting started using git
+  ### Task 1
+  >Comparing each and every patch files of 2 consecutive versions of fedrora for eg. f13 and f14 and generate a diff CSV file 
 
-  >Useful commands
-  
-  ```shell
-  1.git clone [url]-retrieve an entire repository from a hosted location via URL
-  2.git init - initialize an existing directory as a Git repository
-  3.git branch - list your branches. a * will appear next to the currently active branch
-  4.git checkout -  switch to another branch and check it out into your working directory
-  5.git diff branchB...branchA - show the diff of what is in branchA that is not in branchB
-  ```
-  
-## Links
-1. https://src.fedoraproject.org/rpms/grub2/branches?branchname=rawhide - Fedora versions
-2. https://docs.google.com/spreadsheets/d/1EoCEtaAkk-i3tL4SlU3bqkFPzuDPgscUYrIlF1VvZsg/edit#gid=0 - Fedora version comparison
-3. https://docs.google.com/spreadsheets/d/1feBLTM7C_Xf1snN09An0-RWGz49vvFB_Q0Vj5w0yV8Y/edit?ouid=114561297517079528249&usp=sheets_home&ths=true - Fedora version comparison patch wise
-  
- 
-
-
+  #### Installing / Getting started
+    
+    ```shell
+    1.make sure that git is installed in your pc
+    2.clone the repository to the local
+    3.open the cloned repository location in your terminal
+    4.run cammand-'pip install gitpython' in the terminal 
+    5.run command 'python consecutive_versions_patch_comparator.py' in the terminal
+    6.Enter the repository .git link
+    7.A csv comparision file will be generated in the current location
+    ```
+  #### Links
+  1. Colab link-https://colab.research.google.com/drive/1Q7c4Nli6ig76HUNmeZaWARdSgIcyFjXk#scrollTo=FTy2_eyKK8qo  
