@@ -128,7 +128,7 @@ def find_diff(file1,file2,diff_dir_path,file):
     branch1=file1
     branch2=file2
     with open(os.path.join(diff_dir_path, file),'w') as f:
-      process = subprocess.run(['git', 'diff', branch1,branch2], stdout=f,text=True,stderr=subprocess.DEVNULL) # creating a file named as the patch name storing diff
+      process = subprocess.run(['git', 'diff', '--no-index',branch1,branch2], stdout=f,text=True,stderr=subprocess.DEVNULL) # creating a file named as the patch name storing diff
       #print(process.stdout)
     #stdoutput, stderroutput = process.communicate()
 
@@ -153,7 +153,11 @@ def count_lines(diff,path):
     elif(j[0]=='-'):
       deleted_lines+=1
     total_lines+=1
-  return added_lines-1,deleted_lines-1,total_lines;
+  if added_lines!=0 or deleted_lines!=0 :
+    added_lines-=1
+    deleted_lines-=1
+  
+  return added_lines,deleted_lines,total_lines;
 
 #Initializing csv file
 
