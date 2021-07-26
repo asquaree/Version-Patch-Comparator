@@ -24,6 +24,17 @@ import csv
 
 #Function to fetch versions name
 
+def clone_repo(repository_name):
+  
+  rep_local_name='Repository'
+  repository_name=str(repository_name)
+  subprocess.run(['git', 'clone',repository_name,rep_local_name],cwd=os.getcwd() )# cloning the repository inside the Fedora project folder
+
+  stdout = subprocess.check_output('git branch -r'.split(),cwd=os.getcwd()+'\\'+ rep_local_name,) #fetching all branches names
+  out = stdout.decode()
+  all_branches = [b.strip('* ') for b in out.splitlines()]
+  return all_branches
+
 def fetch_versions_name(all_branches): 
   all_version=[] #will store version names
   for i in range(len(all_branches)):
@@ -211,13 +222,10 @@ def main():
   all_branches=[] #will store all branches names
 
   repository_name=input('Enter the repository git link:')
-  repository_name=str(repository_name)
-  rep_local_name="Fedora_repo"
-  subprocess.run(['git', 'clone',repository_name,rep_local_name],cwd=parent_dir )# cloning the repository inside the Fedora project folder
+  rep_local_name="Repository"
+  all_branches=clone_repo(repository_name)
+ 
 
-  stdout = subprocess.check_output('git branch -r'.split(),cwd=parent_dir+'\\'+ rep_local_name,) #fetching all branches names
-  out = stdout.decode()
-  all_branches = [b.strip('* ') for b in out.splitlines()]
   #print(all_branches)
   #all_branches.sort()
 
