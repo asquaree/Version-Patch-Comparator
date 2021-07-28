@@ -16,20 +16,19 @@ import subprocess
 import csv
 
 
-#To delete a non empty folder
-  #shutil.rmtree(os.getcwd()+'\\'+'Fedora project')
-
-
 #FUNCTIONS
 
 #Function to fetch versions name
 
 #USAGE CLI
 def clone_repo(repository_name):
-  
+
+  # if  os.path.exists(os.getcwd()+'\\Repository'):
+  #   shutil.rmtree(os.getcwd()+'\\Repository')
+
   rep_local_name='Repository'
   repository_name=str(repository_name)
-  subprocess.run(['git', 'clone',repository_name,rep_local_name],cwd=os.getcwd() )# cloning the repository inside the Fedora project folder
+  subprocess.run(['git', 'clone',repository_name,rep_local_name],cwd=os.getcwd(),stdout=subprocess.DEVNULL)# cloning the repository inside the Fedora project folder
 
   stdout = subprocess.check_output('git branch -r'.split(),cwd=os.getcwd()+'\\'+ rep_local_name,) #fetching all branches names
   out = stdout.decode()
@@ -66,7 +65,7 @@ def get_version(all_version,repo_local_name):
     for i in range(len(all_version)):
       brch=all_version[i]
       destination_path= os.getcwd()+'\\versions\\'+brch
-      subprocess.run(['git','checkout', brch],cwd=os.getcwd()+'\\'+repo_local_name)
+      subprocess.run(['git','checkout', brch],cwd=os.getcwd()+'\\'+repo_local_name,stdout=subprocess.DEVNULL)
       source_path=os.getcwd()+'\\'+repo_local_name
     
       version_patch_files=os.listdir(source_path)
@@ -76,6 +75,7 @@ def get_version(all_version,repo_local_name):
 #Function to compare consecutive versions
 
 def consecutive_compare(branches):
+  print("Comparing versions....")
   for i in range(len(branches)-1):
     compare(branches[i],branches[i+1]) # function to compare 2 versions
 
@@ -102,7 +102,7 @@ def compare(version1,version2):
         version1_patch_files[file]=1
   for file in os.listdir(path2):
     if file.endswith(".patch"):
-      print(file)
+      #print(file)
       if file in version1_patch_files.keys():
         version1_patch_files[file]=2
         version1_file=path1+"\\"+file
@@ -173,7 +173,7 @@ def find_diff(file1,file2,diff_dir_path,file):
 def count_lines(diff,path):
   added_lines=0
   deleted_lines=0
-  total_lines=0
+  #total_lines=0
   infile = open(os.path.join(path,diff), 'r', encoding='mac_roman')
   text = infile.readlines()
   for j in (text):
@@ -181,12 +181,12 @@ def count_lines(diff,path):
       added_lines+=1
     elif(j[0]=='-'):
       deleted_lines+=1
-    total_lines+=1
+    #total_lines+=1
   if added_lines!=0 or deleted_lines!=0 :
     added_lines-=1
     deleted_lines-=1
   
-  return added_lines,deleted_lines,total_lines;
+  return added_lines,deleted_lines
 
 #Initializing csv file
 
@@ -205,15 +205,15 @@ def check_changes(branch_diff,csv_name):
   path=os.getcwd()+'\\versions_diff'+'\\'+branch_diff
   for diff in os.listdir(path):
     patch_name=str(diff)
-    print(patch_name)
+    #print(patch_name)
     brch_diff=str(branch_diff)
     brch_diff_len=len(brch_diff)/2
     branch1=brch_diff[0:int(brch_diff_len)]
     branch2=brch_diff[int(brch_diff_len):]
-    added_lines,deleted_lines,total_lines=count_lines(diff,path) # storing added,deleted lines values
-    print(added_lines)
-    print(deleted_lines)
-    print(total_lines)
+    added_lines,deleted_lines=count_lines(diff,path) # storing added,deleted lines values
+    #print(added_lines)
+    #print(deleted_lines)
+    #print(total_lines)
     isdeleted=0
     if(deleted_lines!=0 and added_lines<=1):
       isdeleted=1
@@ -223,7 +223,8 @@ def check_changes(branch_diff,csv_name):
 
 #void main()
 #USAGE CLI
-def compare_consecutive_versions(repository_name):  
+def compare_consecutive_versions(repository_name):
+
   parent_dir=os.getcwd()
   print(parent_dir)
   folder_name="versions"
@@ -250,12 +251,15 @@ def compare_consecutive_versions(repository_name):
 
   consecutive_compare(branches) # function to compare consecutive versions
 
+  print("Creating csv file....")
   csv_name=int_csv() #initializing csv file with the headers
 
   diff_folders=os.listdir(os.getcwd()+'\\versions_diff') #storing all diff folders
   diff_folders.sort()
   for i in range( len(diff_folders) ):
     check_changes(diff_folders[i],csv_name) #checking changes in each diff file inside a folder
+  
+  os.startfile(os.getcwd()+"\\"+csv_name)
 
 #USAGE CLI
 def compare_2_versions(repository_name,version1,version2):
@@ -288,6 +292,7 @@ def compare_2_versions(repository_name,version1,version2):
 
   consecutive_compare(branches) # function to compare consecutive versions
 
+  print("Creating csv file....")
   csv_name=int_csv() #initializing csv file with the headers
 
   diff_folders=os.listdir(os.getcwd()+'\\versions_diff') #storing all diff folders
@@ -295,6 +300,8 @@ def compare_2_versions(repository_name,version1,version2):
   for i in range( len(diff_folders) ):
     check_changes(diff_folders[i],csv_name) #checking changes in each diff file inside a folder
   
+  os.startfile(os.getcwd()+"\\"+csv_name)
+
 #USAGE CLI  
 def compare_2_patches(repository_name,version1,version2,patch):
 
@@ -326,6 +333,7 @@ def compare_2_patches(repository_name,version1,version2,patch):
 
   compare_patch(version1,version2,patch) # function to compare consecutive versions
 
+  print("Creating csv file....")
   csv_name=int_csv() #initializing csv file with the headers
 
   diff_folders=os.listdir(os.getcwd()+'\\versions_diff') #storing all diff folders
@@ -333,6 +341,7 @@ def compare_2_patches(repository_name,version1,version2,patch):
   for i in range( len(diff_folders) ):
     check_changes(diff_folders[i],csv_name) #checking changes in each diff file inside a folder
 
+  os.startfile(os.getcwd()+"\\"+csv_name)
 
 
 if __name__=="__main__":
