@@ -36,7 +36,6 @@ def get_repository_name(repository_link):
   
 #Function to fetch branches name
 
-#USAGE CLI
 def clone_repo(repository_link,repository_name):
 
   # if  os.path.exists(os.getcwd()+'\\Repository'):
@@ -234,6 +233,15 @@ def check_changes(branch_diff,csv_name, repository_name):
       csvwriter.writerow([repository_name,patch_name,branch1,branch2,added_lines,deleted_lines,isdeleted])
 
 #void main()
+
+#USAGE GLI
+def clone_repository(repository_link):
+  repository_name=get_repository_name(repository_link)
+  if not os.path.exists(os.getcwd()+"\\" + repository_name):#Creating folder with repository's name 
+    os.mkdir(os.path.join(os.getcwd(),repository_name))
+  
+  clone_repo(repository_link,repository_name)
+
 #USAGE CLI
 def compare_consecutive_branches(repository_link):
 
@@ -277,24 +285,25 @@ def compare_2_branches(repository_link,branch1,branch2):
   repository_name=get_repository_name(repository_link)
   print(repository_name)
 
+  if not os.path.exists(os.getcwd()+"\\" + repository_name):#Creating folder with repository's name 
+    os.mkdir(os.path.join(os.getcwd(),repository_name))
   
-  folder_name="versions"
-  
-  if not os.path.exists(os.getcwd()+"\\" + repository_name+"\\" +folder_name):
-    os.mkdir(os.path.join(os.getcwd()+"\\" + repository_name,folder_name)) #creating versions folder
-  
+
   
   clone_repo(repository_link,repository_name)
-  version1=str(version1)
-  version2=str(version2)
-  all_version=[version1,version2]
+  if not os.path.exists(os.getcwd()+"\\" + repository_name+"\\" +"Branches"):
+    os.mkdir(os.path.join(os.getcwd()+"\\" + repository_name,"Branches")) #creating Branches folder inside repository folder
 
-  print('Version:\n')
-  print(all_version)
+  branch1=str(branch1)
+  branch2=str(branch2)
+  branches_name=[branch1,branch2]
+
+  print('Branches:\n')
+  print(branches_name)
   
-  get_version(all_version,"Cloned",repository_name)#cloning versions seperately from the repository 
+  create_branch_folder(branches_name,"Cloned",repository_name)#cloning Branches seperately from the repository 
   
-  branches = os.listdir(os.getcwd()+"\\"+repository_name+'\\versions')#fetching all the versions from the versions folder
+  branches = os.listdir(os.getcwd()+"\\"+repository_name+'\\Branches')#fetching all the branches from the branches folder
   branches.sort()
 
   consecutive_compare(branches,repository_name) # function to compare consecutive versions
@@ -302,7 +311,7 @@ def compare_2_branches(repository_link,branch1,branch2):
   print("Creating csv file....")
   csv_name=int_csv() #initializing csv file with the headers
 
-  diff_folders=os.listdir(os.getcwd()+"\\"+repository_name+'\\versions_diff') #storing all diff folders
+  diff_folders=os.listdir(os.getcwd()+"\\"+repository_name+'\\Branches_diff') #storing all diff folders
   diff_folders.sort()
   for i in range( len(diff_folders) ):
     check_changes(diff_folders[i],csv_name,repository_name) #checking changes in each diff file inside a folder
@@ -310,37 +319,38 @@ def compare_2_branches(repository_link,branch1,branch2):
   os.startfile(os.getcwd()+"\\"+csv_name)
 
 #USAGE CLI  
-def compare_2_patches(repository_link,version1,version2,patch):
+def compare_2_patches(repository_link,branch1,branch2,patch):
 
   repository_name=get_repository_name(repository_link)
   print(repository_name)
 
+  if not os.path.exists(os.getcwd()+"\\" + repository_name):#Creating folder with repository's name 
+    os.mkdir(os.path.join(os.getcwd(),repository_name))
   
-  folder_name="versions"
-  
-  if not os.path.exists(os.getcwd()+"\\" + repository_name+"\\" +folder_name):
-    os.mkdir(os.path.join(os.getcwd()+"\\" + repository_name,folder_name)) #creating versions folder
 
   
   clone_repo(repository_link,repository_name)
-  version1=str(version1)
-  version2=str(version2)
-  all_version=[version1,version2] #only 2 versions
+  if not os.path.exists(os.getcwd()+"\\" + repository_name+"\\" +"Branches"):
+    os.mkdir(os.path.join(os.getcwd()+"\\" + repository_name,"Branches")) #creating Branches folder inside repository folder
 
-  print('Version:\n')
-  print(all_version)
+  branch1=str(branch1)
+  branch2=str(branch2)
+  branches_name=[branch1,branch2]
 
-  get_version(all_version,"Cloned",repository_name)#cloning versions seperately from the repository 
+  print('Branches:\n')
+  print(branches_name)
+
+  create_branch_folder(branches_name,"Cloned",repository_name)#cloning Branches seperately from the repository 
   
-  branches = os.listdir(os.getcwd()+"\\"+repository_name+'\\versions')#fetching all the versions from the versions folder
+  branches = os.listdir(os.getcwd()+"\\"+repository_name+'\\Branches')#fetching all the branches from the branches folder
   branches.sort()
 
-  compare_patch(version1,version2,patch,repository_name) # function to compare consecutive versions
+  compare_patch(branch1,branch2,patch,repository_name) # function to compare consecutive versions
 
   print("Creating csv file....")
   csv_name=int_csv() #initializing csv file with the headers
 
-  diff_folders=os.listdir(os.getcwd()+"\\"+repository_name+'\\versions_diff') #storing all diff folders
+  diff_folders=os.listdir(os.getcwd()+"\\"+repository_name+'\\Branches_diff') #storing all diff folders
   diff_folders.sort()
   for i in range( len(diff_folders) ):
     check_changes(diff_folders[i],csv_name,repository_name) #checking changes in each diff file inside a folder

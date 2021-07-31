@@ -4,9 +4,9 @@ Patch Comparator CLI.
 
 Usage:
     diff_patch_driver.py clone_repository <repository_link> 
-    diff_patch_driver.py compare_branchs <repository_link> <branch1> <branch2>
-    diff_patch_driver.py compare_consecutive_branchs <repository_link>
-    diff_patch_driver.py compare_branchs_patch <repository_link> <branch1> <branch2> <patch>
+    diff_patch_driver.py compare_branches <repository_link> <branch1> <branch2>
+    diff_patch_driver.py compare_consecutive_branches <repository_link>
+    diff_patch_driver.py compare_branches_patch <repository_link> <branch1> <branch2> <patch>
 
 '''
 
@@ -17,8 +17,8 @@ args = docopt(usage)
 print(args)
 
 if args['clone_repository']:
-    repo_link= args['<repository_link>']
-    clone_repo(repo_link)
+    repository_link= args['<repository_link>']
+    clone_repository(repository_link)
 
 if args['compare_consecutive_branches']:
     repo_link= args['<repository_link>']
