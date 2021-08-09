@@ -51,7 +51,7 @@ def get_branches_name(repository_name):
   all_branches = [b.strip('* ') for b in out.splitlines()]
   
   branches_name=[] #will store branch names
-  for i in range(10,len(all_branches)-10):
+  for i in range(len(all_branches)):
     branch_name=''
     all_branches[i]=all_branches[i][::-1]
     j=0
@@ -110,11 +110,36 @@ def compare(branch1,branch2,repository_name):
   path2=os.getcwd()+"\\"+ repository_name+'\\'+"\\Branches\\"+branch2
   branch1_patch_files={} # creating a dictionary which will keep a check of same patch files name among 2 Branches
   for file in os.listdir(path1):
+    '''#print(file)
+    if(ord(file[0])<65):
+      splitted_file=file.split("-",1)
+      #print(len(splitted_file))
+      new_name=splitted_file[0]
+      src=path1 + '\\'+file
+      dst=path1 + '\\'+new_name
+      os.rename(src,dst)
+      file=new_name
+      #print(file)
+      #print(splitted_file)
+    #print(type(file))
+    '''
     if file.endswith(".patch"):
         branch1_patch_files[file]=1
   for file in os.listdir(path2):
+    '''
+    if(ord(file[0])<65):
+      splitted_file=file.split("-",1)
+      #print(len(splitted_file))
+      new_name=splitted_file[0]
+      src=path2 + '\\'+file
+      dst=path2 + '\\'+new_name
+      os.rename(src,dst)
+      file=new_name
+      #print(file)
+      '''
     if file.endswith(".patch"):
       #print(file)
+
       if file in branch1_patch_files.keys():
         branch1_patch_files[file]=2
         branch1_file=path1+"\\"+file
@@ -131,6 +156,7 @@ def compare(branch1,branch2,repository_name):
       branch2_file=path2+"\\"+'emptyfile'+branch2+'.patch'
       branch1_file=path1+"\\"+file
       find_diff(branch1_file,branch2_file,diff_dir_path,str(file))
+      
 
 def compare_patch(branch1,branch2,patch,repository_name):
   diff_dir_name=""+branch1+branch2
@@ -168,8 +194,9 @@ def find_diff(file1,file2,diff_dir_path,file):
     branch1=file1
     branch2=file2
     with open(os.path.join(diff_dir_path, file),'w') as f:
-      process = subprocess.run(['git', 'diff', '--no-index',branch1,branch2], stdout=f,text=True,stderr=subprocess.DEVNULL) # creating a file named as the patch name storing diff
-      #print(process.stdout)
+      process = subprocess.run(['git','diff','--no-index',branch1,branch2], stdout=f,text=True,stderr=subprocess.DEVNULL) # creating a file named as the patch name storing diff
+      #print(process.stdout),
+      #'--word-diff' ,'--unified=0', '|', 'sed' ,'-nr','-e', "s/$'^.+(\[-|\{\+).*$'/modified/p",'-e',"s/$'^\{\+.*\+\}$'/added/p",'-e',"s/$'^\[-.*-\]$'/removed/p",'|', 'sort' ,'|',' uniq' ,'-c ',
     #stdoutput, stderroutput = process.communicate()
 
     # if 'fatal' in stdoutput:
